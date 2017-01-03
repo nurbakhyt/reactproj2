@@ -16,7 +16,6 @@ class SearchBar extends Component {
     this.state = {
       url: 'https://itunes.apple.com/lookup?',
       app_id: '',
-      lookup: '',
       country_code: 'us',
       result: {}
     };
@@ -31,17 +30,14 @@ class SearchBar extends Component {
     let splits = app_link.split('/id', 2);
     let id = splits[1].split('?', 1);
     this.setState({ app_id: id[0] });
-    // this.handleLink();
   }
   countryChange = (e, { value }) => {
     this.setState({ country_code: value });
-    // this.handleLink();
   }
 
   getLink = (url, app_id, country_code) => {
     return new Promise(function(resolve) {
       let lookup = url + 'id=' + app_id + '&country=' + country_code
-      // this.setState({ lookup: this.state.url + 'id=' + this.state.app_id + '&country=' + this.state.country_code});
       resolve(lookup);
     });
   }
@@ -71,7 +67,6 @@ class SearchBar extends Component {
   }
 
   render() {
-    // const app_link = this.state.app_id;
     const country_code = this.state.country_code;
     return (
       <div className="ui grid">
