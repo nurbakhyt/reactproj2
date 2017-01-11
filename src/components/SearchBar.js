@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Button, Dropdown, Input, Divider } from 'semantic-ui-react'
+import { Button, Dropdown, Input } from 'semantic-ui-react'
 import Ajax from 'superagent';
 import jsonp from 'superagent-jsonp';
+import Iphone from './Iphone';
 
 const options = [
   { text: 'Russia', value: 'ru' },
@@ -14,10 +15,10 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      app_id: '606870241',
+      country_code: 'ru',
+      result: {},
       url: 'https://itunes.apple.com/lookup?',
-      app_id: '',
-      country_code: 'us',
-      result: {}
     };
 
     this.appNameChange = this.appNameChange.bind(this);
@@ -34,15 +35,13 @@ class SearchBar extends Component {
   countryChange = (e, { value }) => {
     this.setState({ country_code: value });
   }
-
   getLink = (url, app_id, country_code) => {
     return new Promise(function(resolve) {
       let lookup = url + 'id=' + app_id + '&country=' + country_code
       resolve(lookup);
     });
   }
-
-  getData(url) {
+  getData = (url) => {
     Ajax.get(url)
         .use(jsonp)
         .end((err, res) => {
@@ -53,7 +52,6 @@ class SearchBar extends Component {
           console.log('Из getData(): ' + res.body.results[0].bundleId);
         });
   }
-
   search = () => {
     console.log('app id: ' + this.state.app_id);
     console.log('country: '+ this.state.country_code);
@@ -75,15 +73,13 @@ class SearchBar extends Component {
         </div>
         <div className="four wide column">
           <Dropdown selection search options={options} value={country_code} onChange={this.countryChange} />
-          
         </div>
         <div className="four wide column">
           <Button primary type='button' onClick={this.search}>Search</Button>
         </div>
         <div className="sixteen wide column">
-          <Divider />
+          <Iphone appData={this.state.result} />
         </div>
-        <pre>{JSON.stringify(this.state.result, null, 2)}</pre>
       </div>
     );
   }
