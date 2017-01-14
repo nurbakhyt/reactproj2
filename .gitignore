@@ -10,10 +10,9 @@ coverage
 
 # production
 build
-<<<<<<< HEAD
+
 src/components/
-=======
->>>>>>> parent of 621f62f... Deleted bootstrap css
+
 
 # misc
 .DS_Store
