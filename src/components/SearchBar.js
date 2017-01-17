@@ -31,9 +31,15 @@ class SearchBar extends Component {
     let splits = app_link.split('/id', 2);
     let id = splits[1].split('?', 1);
     this.setState({ app_id: id[0] });
+    setTimeout(() => {
+      this.search();
+    }, 1000)
   }
   countryChange = (e, { value }) => {
     this.setState({ country_code: value });
+    setTimeout(() => {
+      this.search();
+    }, 1000)
   }
   getLink = (url, app_id, country_code) => {
     return new Promise(function(resolve) {
@@ -43,14 +49,14 @@ class SearchBar extends Component {
   }
   getData = (url) => {
     Ajax.get(url)
-        .use(jsonp)
-        .end((err, res) => {
-          if (err && err.status === 404) {
-            console.log('Fail request');
-          }
-          this.setState({ result: res.body.results[0] });
-          console.log('Из getData(): ' + res.body.results[0].bundleId);
-        });
+      .use(jsonp)
+      .end((err, res) => {
+        if (err && err.status === 404) {
+          console.log('Fail request');
+        }
+        this.setState({ result: res.body.results[0] });
+        console.log('Из getData(): ' + res.body.results[0].bundleId);
+      });
   }
   search = () => {
     console.log('app id: ' + this.state.app_id);
@@ -58,7 +64,7 @@ class SearchBar extends Component {
     let getAppLink = this.getLink(this.state.url, this.state.app_id, this.state.country_code);
     getAppLink
       .then(result => {
-        console.log(result);  
+        console.log(result)
         this.getData(result)
       });
 
